@@ -11,7 +11,6 @@ const DEFAULT_TASKS = [
   { id: 3, name: "Bath before sleep", points: 4 },
   { id: 4, name: "Exercise/Running", points: 8 },
   { id: 5, name: "Cracked Past Paper", points: 12 },
-  // Add remaining default tasks here...
 ];
 
 let currentDay = 1;
@@ -56,10 +55,7 @@ function renderTasks() {
   const tasksList = document.getElementById("tasks-list");
   tasksList.innerHTML = "";
 
-  let totalPossiblePoints = 0;
-  
   tasks.forEach((task) => {
-    totalPossiblePoints += task.points;
     const taskItem = document.createElement("li");
     taskItem.className = "task-item";
 
@@ -70,23 +66,71 @@ function renderTasks() {
     checkbox.addEventListener("change", () => toggleTask(task.id));
     taskItem.appendChild(checkbox);
 
-    // Editable Task Name
-    const taskName = document.createElement("input");
-    taskName.type = "text";
-    taskName.value = task.name;
+    // Task Name
+    const taskName = document.createElement("span");
+    taskName.textContent = task.name + ` (\${task.points} pts)`;
+    taskName.style.color = "limegreen";
+    taskName.style.marginLeft = "8px";
     taskItem.appendChild(taskName);
-
-    // Editable Task Points
-    const taskPoints = document.createElement("input");
-    taskPoints.type = "number";
-    taskPoints.min = 0;
-    taskPoints.value = task.points;
-    taskItem.appendChild(taskPoints);
 
     tasksList.appendChild(taskItem);
   });
+
+  updateProgress();
 }
 
-// --- Main Logic ---
+// --- Task Toggling ---
+function toggleTask(taskId) {
+  if (checkedTaskIds.has(taskId)) {
+    checkedTaskIds.delete(taskId);
+  } else {
+    checkedTaskIds.add(taskId);
+  }
+  saveState();
+}
+
+// --- Score Calculation ---
+function calculateScore() {
+  todayScore = 0;
+  tasks.forEach(task => {
+    if (checkedTaskIds.has(task.id)) {
+      todayScore += task.points;
+    }
+  });
+  saveState();
+  alert(`Your score for Day \${currentDay}: \${todayScore} / \${maxPossiblePoints()}`);
+}
+
+// --- Next Day Handling ---
+function nextDay() {
+  if (currentDay < totalDays) {
+    currentDay++;
+    checkedTaskIds.clear();
+    todayScore = 0;
+    saveState();
+    renderTasks();
+  } else {
+    alert("You've completed all days! Great job!");
+  }
+}
+
+// --- Progress Bar and Info ---
+function updateProgress() {
+  const progressBar = document.getElementById("progress-bar");
+  const dayCount = document.getElementById("day-count");
+  progressBar.style.width = (currentDay / totalDays) * 100 + "%";
+  dayCount.textContent = `Day \${currentDay} of \${totalDays}`;
+}
+
+// --- Max Points ---
+function maxPossiblePoints() {
+  return tasks.reduce((sum, t) => sum + t.points, 0);
+}
+
+// --- Setup event listeners ---
+document.getElementById("calculate-score-btn").addEventListener("click", calculateScore);
+document.getElementById("next-day-btn").addEventListener("click", nextDay);
+
+// --- Initial Load ---
 loadState();
 renderTasks();
