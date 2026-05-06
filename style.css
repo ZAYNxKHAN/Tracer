@@ -1,0 +1,111 @@
+/* --- General and Theme Styling --- */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #070a0f;
+  color: #e6e6e6;
+  scroll-behavior: smooth;
+}
+
+header,
+footer,
+main {
+  padding: 1rem;
+}
+
+/* --- Header Styling --- */
+h1.glitch-title {
+  font-size: 2rem;
+  color: #39ff14;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
+input#total-days {
+  background-color: #222;
+  color: #39ff14;
+  border: 1px solid #39ff14;
+  text-align: center;
+  width: 50px;
+}
+
+/* --- Tasks Section --- */
+section#tasks-section {
+  margin: 1rem 0;
+}
+
+ul#tasks-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #222;
+  background-color: #111;
+  margin-bottom: 0.5rem;
+}
+
+li.task-item input[type="text"],
+li.task-item input[type="number"] {
+  background: #222;
+  color: #39ff14;
+  border: 1px solid #39ff14;
+}
+
+li.task-item input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+/* --- Progress Bar --- */
+progress#progress-bar {
+  width: 100%;
+  height: 1rem;
+  appearance: none;
+}
+
+progress#progress-bar::-webkit-progress-bar {
+  background-color: #222;
+}
+
+progress#progress-bar::-webkit-progress-value {
+  background-color: #39ff14;
+}
+
+#progress-label {
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+/* --- Buttons and Actions --- */
+.actions button {
+  display: block;
+  width: 100%;
+  background-color: #222;
+  border: 1px solid #39ff14;
+  color: #39ff14;
+  padding: 0.5rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0.5rem 0;
+}
+
+.actions button:hover {
+  background-color: #39ff14;
+  color: #070a0f;
+}
+
+.hidden {
+  display: none;
+}
