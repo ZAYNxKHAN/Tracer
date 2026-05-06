@@ -1,45 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Zayn's Streak Tracker - A minimalist, cyber-glitch task tracker." />
-  <title>Zayn’s Streak Tracker</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#070A0F">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Zayn's Streak Tracker PRO</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1 class="glitch-title">Zayn's Streak Tracker</h1>
-    <div id="day-count" style="color: limegreen; font-weight: bold; font-size: 1.2em; margin-bottom: 8px;">
-      Day 1 of 20
+    <div class="noise-overlay"></div>
+    
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title glitch" data-text="STREAK TRACKER PRO">STREAK TRACKER PRO</h1>
+            
+            <!-- Profile Switcher -->
+            <div class="profile-section">
+                <select id="profileSelect" class="profile-select" aria-label="Switch profile">
+                    <option value="">-- Select Profile --</option>
+                </select>
+                <button id="addProfileBtn" class="btn-icon" aria-label="Add new profile" title="Add Profile">➕</button>
+                <button id="exportBtn" class="btn-icon" aria-label="Export profile" title="Export Data">📤</button>
+                <button id="importBtn" class="btn-icon" aria-label="Import profile" title="Import Data">📥</button>
+                <input type="file" id="importFile" accept=".json" style="display:none">
+            </div>
+        </header>
+
+        <!-- Progress Section -->
+        <section class="progress-section">
+            <div class="day-display">
+                <span class="day-label">Day</span>
+                <span class="day-value" id="currentDayDisplay">1</span>
+                <span class="day-separator">of</span>
+                <input type="number" id="totalDaysInput" class="total-days-input" min="1" max="365" value="30" aria-label="Total days">
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-label" id="progressLabel">Progress: 1 / 30 days</div>
+            </div>
+            
+            <div class="streak-info">
+                <span class="streak-badge">🔥 Streak: <strong id="streakCount">1</strong> days</span>
+                <span class="best-badge">👑 Best: <strong id="bestStreak">1</strong> days</span>
+            </div>
+        </section>
+
+        <!-- Namaz Status -->
+        <section class="namaz-section" id="namazSection">
+            <h3 class="section-subtitle">🕌 Namaz Status</h3>
+            <div class="namaz-status" id="namazStatus"></div>
+            <div id="namazPunishment" class="namaz-punishment hidden"></div>
+        </section>
+
+        <!-- Score Card Section -->
+        <section class="scorecard-section">
+            <h2 class="section-title">📋 DAILY SCORECARD (200 Pts)</h2>
+            
+            <div class="tasks-container" id="tasksContainer">
+                <!-- Tasks rendered by JS -->
+            </div>
+            
+            <div class="total-display">
+                <span>Total Possible: <span id="totalPoints">200</span></span>
+                <span id="totalWarning" class="warning-badge hidden">Total ≠ 200</span>
+            </div>
+
+            <div class="action-buttons">
+                <button id="calculateBtn" class="btn btn-primary">📊 CALCULATE SCORE</button>
+            </div>
+
+            <!-- Score Result -->
+            <div id="scoreResult" class="score-result hidden">
+                <div class="score-value" id="scoreValue"></div>
+                <div id="scoreMessage" class="score-message"></div>
+            </div>
+
+            <!-- Milestone Message -->
+            <div id="milestoneMessage" class="milestone-message hidden"></div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section class="leaderboard-section" id="leaderboardSection">
+            <h2 class="section-title">🏆 GROUP LEADERBOARD</h2>
+            <div id="leaderboard" class="leaderboard">
+                <p class="empty-state">Add profiles to see leaderboard!</p>
+            </div>
+        </section>
+
+        <!-- Bottom Action Bar -->
+        <footer class="bottom-bar">
+            <button id="resetDailyBtn" class="btn btn-outline">🔄 RESET DAILY</button>
+            <button id="nextDayBtn" class="btn btn-primary">NEXT DAY →</button>
+        </footer>
     </div>
-    <div id="progress-container" style="width: 100%; background: #222; height: 20px; margin-bottom: 15px;">
-      <div id="progress-bar" style="background: limegreen; height: 100%; width: 0%;"></div>
+
+    <!-- Add Profile Modal -->
+    <div id="profileModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Add New Profile</h3>
+            <input type="text" id="newProfileName" placeholder="Enter name (e.g., Zayn, Ali, Crush)" class="modal-input">
+            <select id="newProfileType" class="modal-input">
+                <option value="self">Self</option>
+                <option value="friend">Friend</option>
+                <option value="rival">Rival 🆚</option>
+                <option value="crush">Crush 💕</option>
+            </select>
+            <div class="modal-buttons">
+                <button id="saveProfileBtn" class="btn btn-primary">Save</button>
+                <button id="cancelProfileBtn" class="btn btn-outline">Cancel</button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main>
-    <section id="tasks-section">
-      <ul id="tasks-list" style="list-style:none; padding-left:0;">
-        <!-- Tasks will be dynamically injected here -->
-      </ul>
-    </section>
-
-    <section class="actions" style="margin-top: 20px;">
-      <button id="calculate-score-btn" style="margin-right:10px;">CALCULATE SCORE</button>
-      <button id="next-day-btn" style="margin-right:10px;">NEXT DAY</button>
-    </section>
-
-    <section id="message-section" style="margin-top:20px;">
-      <p id="today-score"></p>
-      <p id="reward-message" class="hidden"></p>
-    </section>
-  </main>
-
-  <footer style="margin-top: 40px; text-align:center; color: gray;">
-    <p>Made in Karachi | Zayn’s Streak Tracker</p>
-  </footer>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
