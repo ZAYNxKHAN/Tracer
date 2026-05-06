@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zayn's Streak Tracker - A minimalist, cyber-glitch task tracker.">
+  <title>Zayn’s Streak Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 class="glitch-title">Zayn's Streak Tracker</h1>
+    <h2>Day <span id="current-day">1</span> of <input type="number" id="total-days" value="20" min="1"></h2>
+    <progress id="progress-bar" value="1" max="20"></progress>
+    <p id="progress-label">Progress: 1/20 Days</p>
+  </header>
+
+  <main>
+    <section id="tasks-section">
+      <ul id="tasks-list">
+        <!-- Tasks will be dynamically injected here -->
+      </ul>
+      <p>Total Possible: <span id="total-points">100</span></p>
+      <p id="warning-badge" class="hidden">⚠ Total ≠ 100</p>
+    </section>
+
+    <section class="actions">
+      <button id="calculate-score">Calculate Score</button>
+      <button id="next-day">Next Day</button>
+      <button id="reset-day">Reset Daily</button>
+    </section>
+
+    <section id="message-section">
+      <p id="today-score"></p>
+      <p id="reward-message" class="hidden"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made in Karachi | Zayn’s Streak Tracker</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
